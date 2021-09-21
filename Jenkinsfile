@@ -23,8 +23,5 @@ steps{
 bat 'mvn package deploy -DmuleDeploy'
 }
 }
-
- 
-
 }
 }
