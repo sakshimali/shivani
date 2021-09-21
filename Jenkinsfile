@@ -12,7 +12,7 @@ bat 'mvn clean install'
 
 stage('SonarQube Testing'){
 steps{
-bat 'mvn sonar:sonar -Dsonar.sources=src/ -Dsonar.host.url=http://localhost:9000 -Dsonar.login=a421a9e4a578e65d84eb26b5c84421ca41847f2e'
+bat 'mvn sonar:sonar -Dsonar.sources=src/ -Dsonar.host.url=http://localhost:9000 -Dsonar.login=94fca4c5ff9e6bda8cfa3b9ac8f7cea37d8fa82f'
 }
 }
 
