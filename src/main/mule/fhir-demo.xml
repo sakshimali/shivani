@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="729f6eb7-b973-4723-83bc-1b2c954f4868" >
+		<salesforce:basic-connection username="shivani-sanjay.vichare-9hex@force.com" password="Shivani@2306"/>
+	</salesforce:sfdc-config>
+	<flow name="getPatient" doc:id="46e41c31-4ad4-4863-8b36-e77cd8475adc" >
+		<salesforce:query doc:name="Query" doc:id="0f977aea-db68-4d9d-a8df-e34e9773ccaf" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[SELECT NAME, PId__c FROM ACCOUNT]]></salesforce:salesforce-query>
+		</salesforce:query>
+		<ee:transform doc:name="Transform Message" doc:id="bb8d3049-833a-47c7-9e86-8ca616e9191d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="postPatient" doc:id="b4a73dd9-5027-47de-934e-f6b3c35e6926" >
+		<ee:transform doc:name="Transform Message" doc:id="ed694151-69f3-40ed-af57-c5f27d231ec8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[{
+	PId__c : payload.id,
+	Name: payload.name[0].use,
+	BillingCity : payload.address[0].city,
+	BillingState: payload.address[0].state,
+	BillingPostalCode: payload.address[0].postalCode,
+	Phone: payload.telecom[0].value
+}]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:upsert doc:name="Upsert" doc:id="f7501c6b-1074-45ac-a2bd-eed4415b9c50" objectType="Account" externalIdFieldName="Id" config-ref="Salesforce_Config"/>
+		<ee:transform doc:name="Transform Message" doc:id="91d0a5d3-2362-445d-94c1-94fed6494c87" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="deletePatient" doc:id="e499885c-0b89-481d-979a-55645cb0c460" >
+		<salesforce:delete doc:name="Delete" doc:id="b4ded794-ee9c-40df-bd90-d762a43f3436" config-ref="Salesforce_Config"/>
+		<ee:transform doc:name="Transform Message" doc:id="2f4ef06c-26fa-4292-975d-bd0849c9b41f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
