@@ -54,12 +54,6 @@
                       <objectStoreV2>true</objectStoreV2>
                   </cloudHubDeployment>
                 </configuration>
-
- 
-
- 
-
-                </configuration>
             </plugin>
         </plugins>
     </build>
