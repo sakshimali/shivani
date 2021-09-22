@@ -20,7 +20,7 @@ bat 'mvn sonar:sonar -Dsonar.sources=src/ -Dsonar.host.url=http://localhost:9000
 
 stage('Deploy Application to Mulesoft Cloudhub'){
 steps{
-bat 'mvn package deploy -DmuleDeploy'
+bat 'mvn  deploy -DmuleDeploy'
 }
 }
 }
