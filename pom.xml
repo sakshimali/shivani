@@ -35,7 +35,7 @@
 						<environment>Sandbox</environment>
 						<workers>1</workers>
 						<workerType>Micro</workerType>
-						<applicationName>shivani</applicationName>
+						<applicationName>Fhir-demo</applicationName>
 						<password>Shivani2306</password>
 						<muleVersion>4.3.0</muleVersion>
 						<objectStoreV2>true</objectStoreV2>
